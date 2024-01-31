@@ -1,7 +1,14 @@
+'''
+The main purpose of data ingestion is that it fetch the data from souces like api, database and 
+split it into train test and store it  into some folder
+'''
+
+
 import os
 import sys
 
 import pandas as pd
+from src.components.data_transformation import DataTransformation
 from src.exception import CustomException
 from dataclasses import dataclass
 
@@ -19,12 +26,21 @@ class Person:
 
 The object of Person class will be initailized as obj = Person(name='something',age=some_integer)
 Now to access name we can write obj.name
+
+DataIngestionConfig class provides us the path where the data should be stored
 '''
 @dataclass
 class DataIngestionConfig:
     train_data_path:str = os.path.join('artifacts','train.csv')
     test_data_path :str = os.path.join('artifacts','test.csv')
     raw_data_path:str = os.path.join('artifacts','data.csv')
+
+
+
+'''
+DataIngestion class collects the data from the source and 
+stores it in paths provided by DataIngestionConfig
+'''
 
 class DataIngestion:
     def __init__(self):
@@ -62,5 +78,8 @@ class DataIngestion:
         
 if __name__=="__main__":
     obj = DataIngestion()
-    obj.initiate_data_ingestion()
+    train_data,test_data=obj.initiate_data_ingestion()
+
+    data_transformation=DataTransformation()
+    data_transformation.initiate_data_transformation(train_data,test_data)
         
