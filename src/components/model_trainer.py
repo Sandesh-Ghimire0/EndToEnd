@@ -43,10 +43,10 @@ class ModelTrainer:
             )
 
             models = {
+                "Linear Regression": LinearRegression(),
                 "Random Forest": RandomForestRegressor(),
                 "Decision Tree": DecisionTreeRegressor(),
                 "Gradient Boosting": GradientBoostingRegressor(),
-                "Linear Regression": LinearRegression(),
                 "XGBRegressor": XGBRegressor(),
                 "CatBoosting Regressor": CatBoostRegressor(verbose=False),
                 "AdaBoost Regressor": AdaBoostRegressor(),
@@ -62,8 +62,10 @@ class ModelTrainer:
             index = np.where(df['test_accuracy'] == max_accuracy)[0][0]
 
             best_model = df.iloc[index]
+            logging.info(f'The best model is {best_model.models} test accauracy {best_model.test_accuracy}')
 
             save_model = models[best_model.models]
+          
 
             save_object(
                 file_path=self.model_trainer_config.trained_model_file_path,
