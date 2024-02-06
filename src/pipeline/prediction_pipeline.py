@@ -6,6 +6,14 @@ import pandas as pd
 from src.exception import CustomException
 from src.utils import load_object
 
+class TrainingException(Exception):
+    def __init__(self,error_message):
+        super().__init__(error_message)
+        self.error_message="Trianing not initiated. Goto /train at first"
+    
+    def __str__(self):
+        return self.error_message
+
 
 class PredictionPipeline:
     def __init__(self):
@@ -25,7 +33,7 @@ class PredictionPipeline:
             return pred
         
         except Exception as e:
-            raise CustomException(e,sys)
+            raise TrainingException(e)
 
 
 

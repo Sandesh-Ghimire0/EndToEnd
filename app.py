@@ -1,11 +1,15 @@
 from flask import Flask,request,render_template
 
 from src.pipeline.prediction_pipeline import InputData, PredictionPipeline
+from src.pipeline.train_pipeline import TrainingPipeline
 
 
 application = Flask(__name__)
 app = application
 
+
+def return_training_message():
+    return render_template('training.html',data='Training started')
 
 @app.route('/')
 def home():
@@ -35,6 +39,18 @@ def prediction():
         predict_pipeline=PredictionPipeline()
         results=predict_pipeline.predict(pred_df)
         return render_template('prediction_form.html',results=results[0])
+    
+
+@app.route('/train',methods=['GET','POST'])
+def train_model():
+    if request.method == 'GET':
+        return render_template('training.html',started="Training started")
+    
+    else:
+        print("training stated")
+        obj = TrainingPipeline()
+        obj.train()
+        return render_template('training.html',completed = "training completed")
 
 
 if __name__=="__main__":      
